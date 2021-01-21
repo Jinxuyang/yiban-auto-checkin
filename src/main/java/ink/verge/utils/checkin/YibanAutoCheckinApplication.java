@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@EnableScheduling
+@EnableScheduling // 启用定时任务
 @ComponentScan({"com.fehead.lang.**","ink.verge.utils.checkin"})
 @MapperScan("ink.verge.utils.checkin.mapper")
 public class YibanAutoCheckinApplication {

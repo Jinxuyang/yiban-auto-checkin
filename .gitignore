@@ -58,5 +58,6 @@ hs_err_pid*
 
 mail.setting
 application-enc.yml
+application-enc.properties
 src/main/resources/config/generatorConfig.xml
 *.sql
