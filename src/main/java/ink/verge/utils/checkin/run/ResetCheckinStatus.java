@@ -27,7 +27,7 @@ public class ResetCheckinStatus {
             userService.setCheckinStatus(user.getUid(),false,1);
             userService.setCheckinStatus(user.getUid(),false,2);
         }
-        log.info("开始重置完成");
+        log.info("重置完成");
         // 重置明日打卡分钟数
         RunCheckin.dayMinute = new Random().nextInt(58)+1;
         log.info("明日打卡分钟为："+RunCheckin.dayMinute);

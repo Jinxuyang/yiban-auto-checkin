@@ -22,14 +22,7 @@ public class TestHolidayCheckin {
     private RunCheckin runCheckin;
     @Test
     public void test(){
-        runCheckin.holidayCheckin();
+        runCheckin.noonCheck();
     }
 
-    @Test
-    public void randomTest(){
-        for(int i=0;i<100;i++){
-            System.out.println(new Random().nextInt(58)+1);
-        }
-        System.out.println(Calendar.getInstance().get(Calendar.MINUTE));
-    }
 }

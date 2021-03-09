@@ -42,14 +42,26 @@ public class RunCheckin {
     /**
      * 晨间签到
      */
-    //@Scheduled(cron = "0 0 6-8 * * *")
-    public void morCheck() throws InterruptedException {
-        log.info("开始执行晨间签到");
-
-        List<User> morUndoneUser = userService.getMornUncheckUser();
-        for (User user : morUndoneUser) {
-            if (yibanUtils.checkin(user,1)) userService.setCheckinStatus(user.getUid(),true,1);
-            Thread.sleep(1000);
+    @Scheduled(cron = "5 * 6-8 * * *")
+    public void morCheck() {
+        if (Calendar.getInstance().get(Calendar.MINUTE)==dayMinute){
+            log.info("开始执行晨间签到");
+            List<User> morUndoneUser = userService.getMornUncheckUser();
+            for (User user : morUndoneUser) {
+                DayCheckinState dayCheckinState = new DayCheckinState();
+                dayCheckinState.setUserId(user.getUid());
+                dayCheckinState.setCheckTime(new Date());
+                if (yibanUtils.checkin(user,1)) {
+                    userService.setCheckinStatus(user.getUid(),true,1);
+                    // 记录打卡情况
+                    log.info(user.getAccount()+":打卡成功");
+                    dayCheckinState.setCheckState("成功");
+                }else {
+                    log.info(user.getAccount()+":打卡失败");
+                    dayCheckinState.setCheckState("失败");
+                }
+                dayCheckinStateService.save(dayCheckinState);
+            }
         }
 
     }
@@ -57,14 +69,27 @@ public class RunCheckin {
     /**
      * 午间签到
      */
-    //@Scheduled(cron = "0 0 12-14 * * *")
-    public void noonCheck() throws InterruptedException{
-        log.info("开始执行午间签到");
+    @Scheduled(cron = "5 * 12-14 * * *")
+    public void noonCheck() {
+        if (Calendar.getInstance().get(Calendar.MINUTE)==dayMinute){
+            log.info("开始执行午间签到");
 
-        List<User> noonUndoneUserList = userService.getNoonUncheckUser();
-        for (User user : noonUndoneUserList) {
-            if (yibanUtils.checkin(user,2)) userService.setCheckinStatus(user.getUid(),true,2);
-            Thread.sleep(1000);
+            List<User> noonUndoneUserList = userService.getNoonUncheckUser();
+            for (User user : noonUndoneUserList) {
+                DayCheckinState dayCheckinState = new DayCheckinState();
+                dayCheckinState.setUserId(user.getUid());
+                dayCheckinState.setCheckTime(new Date());
+                if (yibanUtils.checkin(user,2)) {
+                    userService.setCheckinStatus(user.getUid(),true,1);
+                    // 记录打卡情况
+                    log.info(user.getAccount()+":打卡成功");
+                    dayCheckinState.setCheckState("成功");
+                }else {
+                    log.info(user.getAccount()+":打卡失败");
+                    dayCheckinState.setCheckState("失败");
+                }
+                dayCheckinStateService.save(dayCheckinState);
+            }
         }
     }
 
@@ -72,18 +97,20 @@ public class RunCheckin {
      * 假期签到
      */
 //    @Scheduled(cron = "0 0 8-14 * * *")
-    public void holidayCheckin(){
+    /*public void holidayCheckin(){
         List<User> list = userService.getMornUncheckUser();
         for (User user : list) {
             if (yibanUtils.checkin(user)) userService.setCheckinStatus(user.getUid(),true,1);
         }
-    }
+    }*/
+
+
 
     /**
      * 8-14点的每分钟进行打卡检查
      * 5 秒是为了防止两边时间计算不一样从而导致一分钟连续打两次
      */
-    @Scheduled(cron = "5 * 8-14 * * *")
+    /*@Scheduled(cron = "5 * 8-14 * * *")
     public void randomCheck(){
         // 时间符合
         if (Calendar.getInstance().get(Calendar.MINUTE)==dayMinute){
@@ -98,15 +125,14 @@ public class RunCheckin {
                     // 记录打卡情况
                     log.info(user.getAccount()+":打卡成功");
                     dayCheckinState.setCheckState("成功");
-                    dayCheckinStateService.save(dayCheckinState);
                 }else {
                     log.info(user.getAccount()+":打卡失败");
                     dayCheckinState.setCheckState("失败");
-                    dayCheckinStateService.save(dayCheckinState);
                 }
+                dayCheckinStateService.save(dayCheckinState);
             }
         }
-    }
+    }*/
 
 
 }
